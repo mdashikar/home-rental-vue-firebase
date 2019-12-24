@@ -220,7 +220,6 @@ export default {
 <style scoped>
 .user-register {
   padding: 5% 25%;
-  height: 100%;
   background: rgb(2, 0, 36);
   background: linear-gradient(
     90deg,
@@ -231,7 +230,7 @@ export default {
   color: #fff;
 
   /* Set a specific height */
-  height: 100%;
+  height: 100vh;
   /* Position and center the image to scale nicely on all screens */
   background-position: center;
   background-repeat: no-repeat;
