@@ -6,7 +6,12 @@
         alt="Admin avatar"
         class="inline-block p-2"
       />
-      <strong class="inline-block text-3xl text-white pl-2 pt-4 truncate" v-if="user.data"> {{user.data.displayName}} </strong>
+      <strong
+        class="inline-block text-3xl text-white pl-2 pt-4 truncate"
+        v-if="user.data"
+      >
+        {{ user.data.displayName }}
+      </strong>
     </div>
     <a-menu
       class="side-nav"
@@ -19,21 +24,27 @@
     >
       <a-menu-item key="1">
         <router-link to="/dashboard">
-        <a-icon type="dashboard" />
-        Dashboard
+          <a-icon type="dashboard" />
+          Dashboard
         </router-link>
       </a-menu-item>
       <a-sub-menu key="sub1">
-        <span slot="title"><a-icon type="usergroup-add" /><span>Rentals</span></span>
+        <span slot="title"
+          ><a-icon type="usergroup-add" /><span>Rentals</span></span
+        >
         <a-menu-item key="3">Create</a-menu-item>
         <a-menu-item key="4">Manage</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
         <span slot="title"><a-icon type="home" /><span>Flats</span></span>
-        <a-menu-item key="5" > <router-link to="/flats/create"> Create </router-link></a-menu-item>
-        <a-menu-item key="6">  <router-link to="/flats/manage"></router-link>Manage</a-menu-item>
+        <a-menu-item key="5">
+          <router-link to="/flats/create"> Create </router-link></a-menu-item
+        >
+        <a-menu-item key="6">
+          <router-link to="/flats/manage">Manage</router-link></a-menu-item
+        >
       </a-sub-menu>
-      
+
       <a-sub-menu key="sub3">
         <span slot="title"
           ><a-icon type="dollar" /><span>Monthly Rents</span></span
