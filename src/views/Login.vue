@@ -76,11 +76,18 @@
 
 <script>
 import firebase from "firebase";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       loading: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: "user"
+    })
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });
@@ -91,13 +98,14 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.loading = true;
-          console.log("Received values of form: ", values);
           firebase
             .auth()
             .signInWithEmailAndPassword(values.email, values.password)
             .then(data => {
+              if (data) {
+                this.$message.success("You are logged in !!!");
+              }
               this.$router.replace({ name: "dashboard" });
-              console.log(data);
               this.loading = false;
             })
             .catch(err => {
@@ -106,7 +114,15 @@ export default {
             });
         }
       });
+    },
+    isUserLoggedIn() {
+      if (this.user.loggedIn) {
+        this.$router.replace({ name: "dashboard" });
+      }
     }
+  },
+  mounted() {
+    this.isUserLoggedIn();
   }
 };
 </script>

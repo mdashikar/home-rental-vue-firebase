@@ -1,6 +1,13 @@
 <template>
-  <div class="bg-gray-300">
-      <Navbar/>
+  <div>
+    <!-- Two columns -->
+
+    <div class="flex mb-4">
+      <div class="w-1/5 h-12">
+        <Navbar class="inline" />
+      </div>
+      <div class="w-4/5 bg-gray-500 h-12"></div>
+    </div>
   </div>
 </template>
 
@@ -10,7 +17,6 @@
 
 import { mapGetters } from "vuex";
 import Navbar from "../components/Navbar";
-
 
 export default {
   computed: {
@@ -25,6 +31,4 @@ export default {
 };
 </script>
 
-<style scoped>
-  
-</style>
+<style scoped></style>
