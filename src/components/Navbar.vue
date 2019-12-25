@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="bg-blue-900 logo">
+    <div class=" flex bg-blue-900 logo">
       <img
         src="../assets/img/boss.png"
         alt="Admin avatar"
         class="inline-block p-2"
       />
-      <label class="inline-block text-3xl text-white pl-4">ADMIN</label>
+      <strong class="inline-block text-3xl text-white pl-2 pt-4 truncate" v-if="user.data"> {{user.data.displayName}} </strong>
     </div>
     <a-menu
       class="side-nav"
@@ -18,23 +18,31 @@
       @click="handleClick"
     >
       <a-menu-item key="1">
-        <a-icon type="user" />
+        <router-link to="/dashboard">
+        <a-icon type="dashboard" />
         Dashboard
+        </router-link>
       </a-menu-item>
       <a-sub-menu key="sub1">
-        <span slot="title"><a-icon type="appstore" /><span>Rentals</span></span>
+        <span slot="title"><a-icon type="usergroup-add" /><span>Rentals</span></span>
         <a-menu-item key="3">Create</a-menu-item>
         <a-menu-item key="4">Manage</a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="sub2">
+        <span slot="title"><a-icon type="home" /><span>Flats</span></span>
+        <a-menu-item key="5" > <router-link to="/flats/create"> Create </router-link></a-menu-item>
+        <a-menu-item key="6">  <router-link to="/flats/manage"></router-link>Manage</a-menu-item>
+      </a-sub-menu>
+      
+      <a-sub-menu key="sub3">
         <span slot="title"
-          ><a-icon type="setting" /><span>Monthly Rents</span></span
+          ><a-icon type="dollar" /><span>Monthly Rents</span></span
         >
         <a-menu-item key="7">Create</a-menu-item>
         <a-menu-item key="8">Manage</a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="9">
-        <a-icon type="user" />
+      <a-menu-item key="9" @click="signOut">
+        <a-icon type="logout" />
         Logout
       </a-menu-item>
     </a-menu>
@@ -58,7 +66,6 @@ export default {
   },
   methods: {
     handleClick(e) {
-      console.log("click ", e);
       this.current = e.key;
     },
     changeTheme(checked) {

@@ -103,7 +103,7 @@ export default {
             .signInWithEmailAndPassword(values.email, values.password)
             .then(data => {
               if (data) {
-                this.$message.success("You are logged in !!!");
+                this.$message.success("You are now logged in !!!");
               }
               this.$router.replace({ name: "dashboard" });
               this.loading = false;

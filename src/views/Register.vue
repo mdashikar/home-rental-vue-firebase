@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+const fb = require("../firebase/fbConfig");
 
 export default {
   data() {
@@ -173,25 +173,43 @@ export default {
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           this.loading = true;
-          firebase
-            .auth()
+          fb
+            .auth
             .createUserWithEmailAndPassword(values.email, values.password)
             .then(data => {
-              data.user
-                .updateProfile({
-                  displayName: values.name,
-                  phoneNumber: values.phone
-                })
-                .then(() => {
-                  this.loading = false;
-                  this.$message.success("Registration completed!!!!");
-                  this.$router.replace({ name: "login" });
-                });
+                //console.log(data)
+                // create user obj
+                fb.usersCollection
+                  .doc(data.user.uid)
+                  .set({
+                    name: values.name,
+                    phone: values.phone,
+                    email: values.email,
+                    userId: data.user.uid,
+                  })
+                  .then(() => {
+                      data.user
+                      .updateProfile({
+                        displayName: values.name,
+                        phoneNumber: values.phone
+                      })
+                      .then(() => {
+                        this.loading = false;
+                        this.$message.success("Registration completed!!!!");
+                        this.$router.replace({ name: "login" });
+                      })
+                      
+                  })
+                  .catch(err => {
+                    this.$message.error(err.message);
+                    this.loading = false;
+                  });
             })
             .catch(err => {
-              this.$message.error(err.message);
-              this.loading = false;
-            });
+                        this.$message.error(err.message);
+                        this.loading = false;
+                      });
+            
         }
       });
     },
