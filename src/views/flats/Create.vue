@@ -75,23 +75,24 @@ export default {
   },
   methods: {
       saveFlats(){
-          
           this.loading = true;
           fb.flatsCollection
             .add({
                 createdOn: new Date(),
                 label: this.flatData.label,
                 monthlyRent: this.flatData.monthlyRent,
-                numberOfRoom: this.flatData.numberOfRoom
+                numberOfRoom: this.flatData.numberOfRoom,
+                createdBy: this.user.data.uid
             })
-            .then( () => {
+            .then( doc => {
+                doc.update({id : doc.id})
                 this.loading = false;
                 this.$message.success("Flats saved succuessfully!!!")
                 this.flatData = {};
             })
             .catch( err => {
                 this.loading = false;
-                this.$message.console.error(err);
+                this.$message.error(err);
                
             })
       }
