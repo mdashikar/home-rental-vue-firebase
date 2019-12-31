@@ -41,7 +41,26 @@ const routes = [{
     // which is lazy-loaded when the route is visited.
     component: () =>
       import( /* webpackChunkName: "about" */ "../views/flats/Manage.vue")
-  }
+  },
+  {
+    path: "/rentals/create",
+    name: "rentals-create",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import( /* webpackChunkName: "about" */ "../views/rentals/Create.vue")
+  },
+  {
+    path: "/rentals/manage",
+    name: "rentals-manage",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import( /* webpackChunkName: "about" */ "../views/rentals/Manage.vue")
+  },
+
 ];
 
 const router = new VueRouter({

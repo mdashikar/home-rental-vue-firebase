@@ -6,7 +6,9 @@
       <div class="w-1/5 h-12">
         <Navbar/>
       </div>
-      <div class="w-4/5 bg-gray-500 h-12"></div>
+      <div class="w-4/5 bg-gray-500 h-12">
+      
+      </div>
     </div>
   </div>
 </template>
