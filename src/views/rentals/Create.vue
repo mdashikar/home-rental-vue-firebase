@@ -11,36 +11,64 @@
 
     <h2 class="text-center text-blue-600 text-2xl">Create Rentals</h2>
 
-    <!-- Two columns -->
+    <a-form :form="form" @submit="handleSubmit">
     <div class="w-6/12 flex my-12 mx-auto">
       <div class="w-1/2  h-12 mx-4">
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Advance Payment">
-        Advance Payment
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" placeholder="৳ 2500" v-model="rentalData.advancePayment">
 
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Flat Number">
-        Flat Number
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="2" v-model="rentalData.flatNumber">
-
-        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Mobile Number">
-        Mobile Number
-        </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="01942010059" v-model="rentalData.mobileNumber">
 
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Name">
         Name
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="John Alex" v-model="rentalData.name">
+        <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Name"
+            v-decorator="['name', { rules: [{ required: true, message: 'Please input Name!' }] }]"
+          />
+      </a-form-item>
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Advance Payment">
+        Advance Payment
+        </label>
+
+        <a-form-item >
+        <a-input
+          class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Advance Payment"
+          v-decorator="['advancePayment', { rules: [{ required: true, message: 'Please input advance payment!' }] }]"
+        />
+        </a-form-item>
+
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Flat Number">
+        Flat Number
+        </label>
+        <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Flat Number"
+            v-decorator="['flatNumber', { rules: [{ required: true, message: 'Please input Flat Number!' }] }]"
+          />
+      </a-form-item>
+
+        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Mobile Number">
+        Mobile Number
+        </label>
+        <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Mobile Number"
+            v-decorator="['mobileNumber', { rules: [{ required: true, message: 'Please input Mobile Number!' }] }]"
+          />
+      </a-form-item>
+
 
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Reference">
         Reference
         </label>
-        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="2" v-model="rentalData.reference">
+        <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Reference"
+            v-decorator="['reference', { rules: [{ required: true, message: 'Please input Reference!' }] }]"
+          />
+      </a-form-item>
 
         <!-- Button -->
-        <a-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded" type="primary"  @click.prevent="saveRentals" :loading="loading"  >Save</a-button> 
+        <a-button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded" type="primary" :loading="loading" html-type="submit" >Save</a-button> 
       </div>
 
     <div class="w-1/2 h-12 mx-4">
@@ -48,39 +76,65 @@
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Family Member">
       Family Member
       </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="2" v-model="rentalData.familyMember">
+      <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Family Member"
+            v-decorator="['familyMember', { rules: [{ required: true, message: 'Please input Family Member!' }] }]"
+          />
+      </a-form-item>
 
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Home Number">
       Home Number
       </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="2" v-model="rentalData.homeNumber">
+      <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Home Number"
+            v-decorator="['homeNumber', { rules: [{ required: true, message: 'Please input Home Number!' }] }]"
+          />
+      </a-form-item>
 
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Monthly Rent">
       Monthly Rent
       </label>
-      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" placeholder="৳ 15,000" v-model="rentalData.monthlyRent">
+      <a-form-item >
+          <a-input
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Monthly Rent"
+            v-decorator="['monthlyRent', { rules: [{ required: true, message: 'Please input Monthly Rent!' }] }]"
+          />
+      </a-form-item>
 
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="NID scan copy">
       NID scan copy
       </label>
       <a-upload 
-      v-model="rentalData.nidScan"
+
       name="file"
       :multiple="true"
       :headers="headers"
       @change="handleChange"
+     
       >
-      <a-button class="mb-6 bg-gray-200 "> <a-icon type="upload" /> Click to Upload </a-button>
+      <a-button class="mb-10"> <a-icon type="upload" /> Click to Upload </a-button>
       </a-upload>
 
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Start Date">
       Start Date
       </label>
-      <a-date-picker @change="setStartDate"/>
+
+      <a-form-item >
+          <a-date-picker  placeholder="Start Date" for="Start Date"  @change="setStartDate"
+            v-decorator="['startDate', { rules: [{ required: true, message: 'Please input Join Date!' }] }]"
+            
+          />
+      </a-form-item> 
 
                          
     </div>  
     </div>
+
+    </a-form>
+
+    
 
   </div>
 </div>
@@ -96,22 +150,17 @@ export default {
   data(){
       return{
           rentalData: {
-              label: '',
-              advancePayment: '',
-              flatNumber: '',
-              mobileNumber:'',
-              name:'',
-              reference:'',
-              familyMember:'',
-              homeNumber:'',
-              monthlyRent:'',
-              nidScan:'',
-              startDate:''
+              startDate:'',
+              createId:''
           },
           headers: {
           authorization: 'authorization-text',
+
+
         },
-          loading: false
+          loading: false,
+          formLayout: 'horizontal',
+          form: this.$form.createForm(this, { name: 'coordinated' }),
       }
   },
   computed: {
@@ -137,22 +186,21 @@ export default {
       setStartDate(date, dateString) {
         this.rentalData.startDate = dateString;
       },
-
-      saveRentals(){
+      saveRentals(values){
+          
           this.loading = true;
           fb.rentalsCollection
             .add({
                 createdOn: new Date(),
-                label: this.rentalData.label,
-                advancePayment: this.rentalData.advancePayment,
-                flatNumber: this.rentalData.flatNumber,
-                mobileNumber: this.rentalData.mobileNumber,
-                name: this.rentalData.name,
-                reference: this.rentalData.reference,
-                familyMember: this.rentalData.familyMember,
-                homeNumber: this.rentalData.homeNumber,
-                monthlyRent: this.rentalData.monthlyRent,
-                nidScan: this.rentalData.nidScan,
+                advancePayment: values.advancePayment,
+                flatNumber: values.flatNumber,
+                mobileNumber: values.mobileNumber,
+                name: values.name,
+                reference: values.reference,
+                familyMember: values.familyMember,
+                homeNumber: values.homeNumber,
+                monthlyRent: values.monthlyRent,
+                nidScan: '',
                 startDate: this.rentalData.startDate,
                 createdBy: this.user.data.uid
             })
@@ -161,13 +209,23 @@ export default {
                 this.loading = false;
                 this.$message.success("Rentals saved succuessfully!!!")
                 this.flatData = {};
+                this.form.setFieldsValue({ name: '' });
             })
             .catch( err => {
                 this.loading = false;
                 this.$message.error(err);
                
             })
+      },
+      handleSubmit(e) {
+        e.preventDefault();
+        this.form.validateFields((err, values) => {
+          if (!err) {
+            this.saveRentals(values);
+          }
+        });
       }
+    
   }
 };
 </script>

@@ -295,7 +295,7 @@ export default {
         if (err) {
           return;
         }
-        fb.rentalsCollection.doc(this.flatId).update({
+        fb.rentalsCollection.doc(this.rentalId).update({
           label: values.label,
           advancePayment: values.advancePayment,
           flatNumber: values.flatNumber,
@@ -319,7 +319,7 @@ export default {
     showModal(id, index) {
         this.modalVisible = true;
         this.rentalId = id;
-        this.form.setFieldsValue({ label: this.rentals[index].label });
+        
         this.form.setFieldsValue({ advancePayment: this.rentals[index].advancePayment });
          this.form.setFieldsValue({ flatNumber : this.rentals[index].flatNumber });
           this.form.setFieldsValue({ mobileNumber: this.rentals[index].mobileNumber });
