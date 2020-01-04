@@ -21,7 +21,7 @@
         </label>
         <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Name"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Dewan Akil Gazi" for="Name"
             v-decorator="['name', { rules: [{ required: true, message: 'Please input Name!' }] }]"
           />
       </a-form-item>
@@ -40,10 +40,18 @@
         Flat Number
         </label>
         <a-form-item >
-          <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Flat Number"
-            v-decorator="['flatNumber', { rules: [{ required: true, message: 'Please input Flat Number!' }] }]"
-          />
+          <a-select
+            showSearch
+            placeholder="Select flat label"
+            optionFilterProp="selectFalts"
+            @focus="handleFocus"
+            @blur="handleBlur"
+            @change="selectFlats"
+            :filterOption="filterOption"
+            v-decorator="['flatNumber', { rules: [{ required: true, message: 'Please select flat label' }] }]"
+          >
+            <a-select-option  v-for="(item, index) in flats"  :key="index" :value="index">{{item.label}}</a-select-option>
+          </a-select>
       </a-form-item>
 
         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="Mobile Number">
@@ -51,7 +59,7 @@
         </label>
         <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Mobile Number"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="01942010059" for="Mobile Number"
             v-decorator="['mobileNumber', { rules: [{ required: true, message: 'Please input Mobile Number!' }] }]"
           />
       </a-form-item>
@@ -62,7 +70,7 @@
         </label>
         <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Reference"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Md. Ashiqur Rahman" for="Reference"
             v-decorator="['reference', { rules: [{ required: true, message: 'Please input Reference!' }] }]"
           />
       </a-form-item>
@@ -78,7 +86,7 @@
       </label>
       <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Family Member"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Ex. 04" for="Family Member"
             v-decorator="['familyMember', { rules: [{ required: true, message: 'Please input Family Member!' }] }]"
           />
       </a-form-item>
@@ -88,7 +96,7 @@
       </label>
       <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Home Number"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Ex. 02" for="Home Number"
             v-decorator="['homeNumber', { rules: [{ required: true, message: 'Please input Home Number!' }] }]"
           />
       </a-form-item>
@@ -98,7 +106,7 @@
       </label>
       <a-form-item >
           <a-input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="৳ 2500" for="Monthly Rent"
+            class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-5 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Monthly rent" for="Monthly Rent"
             v-decorator="['monthlyRent', { rules: [{ required: true, message: 'Please input Monthly Rent!' }] }]"
           />
       </a-form-item>
@@ -155,9 +163,10 @@ export default {
           },
           headers: {
           authorization: 'authorization-text',
-
+          
 
         },
+          flats: [],
           loading: false,
           formLayout: 'horizontal',
           form: this.$form.createForm(this, { name: 'coordinated' }),
@@ -187,7 +196,6 @@ export default {
         this.rentalData.startDate = dateString;
       },
       saveRentals(values){
-          
           this.loading = true;
           fb.rentalsCollection
             .add({
@@ -209,7 +217,18 @@ export default {
                 this.loading = false;
                 this.$message.success("Rentals saved succuessfully!!!")
                 this.flatData = {};
-                this.form.setFieldsValue({ name: '' });
+                this.form.setFieldsValue({ 
+                    name: '',
+                    advancePayment: '',
+                    flatNumber: '',
+                    mobileNumber: '',
+                    reference: '',
+                    familyMember: '',
+                    homeNumber: '',
+                    monthlyRent: '',
+                    nidScan: '',
+                    startDate: '',
+                 });
             })
             .catch( err => {
                 this.loading = false;
@@ -224,8 +243,40 @@ export default {
             this.saveRentals(values);
           }
         });
-      }
+      },
+      selectFlats(index) {
+        this.form.setFieldsValue({ flatNumber:  this.flats[index].label});
+        this.form.setFieldsValue({ monthlyRent:  this.flats[index].monthlyRent});
+
+      },
+      handleBlur() {
+        console.log('blur');
+      },
+      handleFocus() {
+        console.log('focus');
+      },
+      filterOption(input, option) {
+        return (
+          option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        );
+      },
+ 
+
+      async getFlats() {
+      await fb.flatsCollection.where("createdBy", "==", this.user.data.uid).get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // doc.data() is never undefined for query doc snapshots
+          this.flats.push(doc.data());
+          
+        });
+        this.tableLoading= false;
+      });
+    },
     
+  }
+  ,
+  created() {
+    this.getFlats();
   }
 };
 </script>

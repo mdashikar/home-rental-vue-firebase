@@ -18,6 +18,7 @@ const currentUser = auth.currentUser
 const usersCollection = db.collection('users')
 const rentalsCollection = db.collection('rentals')
 const flatsCollection = db.collection('flats')
+const monthlyRentCollection = db.collection('monthlyRents')
 
 export {
 	db,
@@ -26,5 +27,6 @@ export {
 	currentUser,
 	usersCollection,
     rentalsCollection,
-    flatsCollection
+	flatsCollection,
+	monthlyRentCollection
 }

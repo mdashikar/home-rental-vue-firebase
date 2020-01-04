@@ -60,6 +60,25 @@ const routes = [{
     component: () =>
       import( /* webpackChunkName: "about" */ "../views/rentals/Manage.vue")
   },
+  {
+    path: "/monthly-rents/create",
+    name: "monthly-rents-create",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import( /* webpackChunkName: "about" */ "../views/monthly-rents/Create.vue")
+  },
+  {
+    path: "/monthly-rents/manage",
+    name: "monthly-rents-manage",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import( /* webpackChunkName: "about" */ "../views/monthly-rents/Manage.vue")
+  },
+  
 
 ];
 

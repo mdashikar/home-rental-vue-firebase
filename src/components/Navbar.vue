@@ -49,8 +49,8 @@
         <span slot="title"
           ><a-icon type="dollar" /><span>Monthly Rents</span></span
         >
-        <a-menu-item key="7">Create</a-menu-item>
-        <a-menu-item key="8">Manage</a-menu-item>
+        <a-menu-item key="7"><router-link to="/monthly-rents/create"> Create </router-link></a-menu-item>
+        <a-menu-item key="8"><router-link to="/monthly-rents/manage"> Manage </router-link></a-menu-item>
       </a-sub-menu>
       <a-menu-item key="9" @click="signOut">
         <a-icon type="logout" />
