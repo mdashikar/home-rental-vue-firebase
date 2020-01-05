@@ -54,17 +54,21 @@
                   ]"
                 />
             </a-form-item>
-                <a-form-item label='Payment Status'>
-                <a-input
-                  
-                  v-decorator="[
-                    'paymentStatus',
-                    {
-                      rules: [{ required: true, message: 'Please input Payment Status' }],
-                    }
-                  ]"
-                />
-            </a-form-item>
+           <a-form-item  label='Payment Status'>
+              <a-select
+                showSearch
+                placeholder="Select Payment Status"
+                optionFilterProp="selectPayment"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                @change="selectPaymentStatus"
+                :filterOption="filterOption"
+                v-decorator="['paymentStatus', { rules: [{ required: true, message: 'Please select Payment Status' }] }]"
+              >
+                <a-select-option value="paid">Paid</a-select-option>
+                <a-select-option value="due">Due</a-select-option>
+              </a-select>
+        </a-form-item>
           </a-col>
 
           <a-col :span="12" class="px-2">
@@ -81,27 +85,16 @@
             </a-form-item>
 
             <a-form-item label='Rented Month'>
-                <a-date-picker @change="setRentedMonth"
-                  
-                  v-decorator="[
-                    'rentedMonth',
-                    {
-                      rules: [{ required: true, message: 'Please input Rented Month!' }],
-                    }
-                  ]"
-                />
+                <a-month-picker class="w-full" placeholder="Select Month" for="Start Date"  @change="setRentedMonth"
+
+                v-decorator="['rentedMonth', { rules: [{ required: true, message: 'Please input Payment Date!' }] }]"
+            />
             </a-form-item>
 
             <a-form-item label='Payment Date'>
-                <a-date-picker @change="setPaymentDate"
-                  
-                  v-decorator="[
-                    'paymentDate',
-                    {
-                      rules: [{ required: true, message: 'Please input Payment Date!' }],
-                    }
-                  ]"
-                />
+                 <a-date-picker class="w-full"  placeholder="Payment Date" for="Start Date"  @change="setPaymentDate"
+                v-decorator="['paymentDate', { rules: [{ required: true, message: 'Please input Payment Date!' }] }]"
+            />
             </a-form-item>
           </a-col>
         </a-row>
@@ -175,12 +168,21 @@ function onChange(pagination, filters, sorter) {
 export default {
   data() {
     return {
+      monthlyRentData: {
+              paymentDate:'',
+              rentedMonth: '',
+              paymentStatus: '',
+              rentalId: '',
+              rentalName: '',
+              createId:''
+          },
       monthlyRents: [],
       loading: false,
       tableLoading: true,
       columns,
       modalVisible: false,
-      monthlyRentId: ''
+      monthlyRentId: '',
+
     };
   },
   beforeCreate() {
@@ -235,10 +237,10 @@ export default {
         fb.monthlyRentCollection.doc(this.monthlyRentId).update({
           rentalName: values.rentalName,
           monthlyRent: values.monthlyRent,
-          paymentStatus: values.paymentStatus,
+          paymentStatus :this.monthlyRentData.paymentStatus,
           flatNumber: values.flatNumber,
-          rentedMonth: values.rentedMonth,
-          paymentDate: values.paymentDate,
+          rentedMonth: this.monthlyRentData.rentedMonth,
+          paymentDate: this.monthlyRentData.paymentDate,
         })
         this.form.resetFields();
         this.monthlyRents = [];
