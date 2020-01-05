@@ -184,7 +184,7 @@ export default {
   methods: {
       handleChange(info) {
         if (info.file.status !== 'uploading') {
-          console.log(info.file, info.fileList);
+          //console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
           this.$message.success(`${info.file.name} file uploaded successfully`); //Upload File
@@ -247,13 +247,12 @@ export default {
       selectFlats(index) {
         this.form.setFieldsValue({ flatNumber:  this.flats[index].label});
         this.form.setFieldsValue({ monthlyRent:  this.flats[index].monthlyRent});
-
       },
       handleBlur() {
-        console.log('blur');
+        // console.log('blur');
       },
       handleFocus() {
-        console.log('focus');
+        // console.log('focus');
       },
       filterOption(input, option) {
         return (
@@ -263,7 +262,7 @@ export default {
  
 
       async getFlats() {
-      await fb.flatsCollection.where("createdBy", "==", this.user.data.uid).get().then(querySnapshot => {
+        await fb.flatsCollection.where("createdBy", "==", this.user.data.uid).get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
           this.flats.push(doc.data());
