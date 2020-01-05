@@ -159,6 +159,7 @@ export default {
       return{
           rentalData: {
               startDate:'',
+              flatNumber: '',
               createId:''
           },
           headers: {
@@ -196,12 +197,13 @@ export default {
         this.rentalData.startDate = dateString;
       },
       saveRentals(values){
-          this.loading = true;
+         
+         this.loading = true;
           fb.rentalsCollection
             .add({
                 createdOn: new Date(),
                 advancePayment: values.advancePayment,
-                flatNumber: values.flatNumber,
+                flatNumber: this.rentalData.flatNumber,
                 mobileNumber: values.mobileNumber,
                 name: values.name,
                 reference: values.reference,
@@ -245,6 +247,7 @@ export default {
         });
       },
       selectFlats(index) {
+        this.rentalData.flatNumber = this.flats[index].label;
         this.form.setFieldsValue({ flatNumber:  this.flats[index].label});
         this.form.setFieldsValue({ monthlyRent:  this.flats[index].monthlyRent});
       },

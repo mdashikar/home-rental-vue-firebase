@@ -55,15 +55,15 @@
           <a-select
             showSearch
             placeholder="Select Payment Status"
-            optionFilterProp="selectFalts"
+            optionFilterProp="selectPayment"
             @focus="handleFocus"
             @blur="handleBlur"
-            @change="selectFlats"
+            @change="selectPaymentStatus"
             :filterOption="filterOption"
             v-decorator="['paymentStatus', { rules: [{ required: true, message: 'Please select Payment Status' }] }]"
           >
-            <a-select-option value="jack">Paid</a-select-option>
-            <a-select-option value="lucy">Due</a-select-option>
+            <a-select-option value="paid">Paid</a-select-option>
+            <a-select-option value="due">Due</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -89,8 +89,8 @@
         </label>
 
         <a-form-item >
-            <a-month-picker class="w-full" placeholder="Select Month" for="Start Date"  @change="monthPicker"
-                v-decorator="['paymentDate', { rules: [{ required: true, message: 'Please input Payment Date!' }] }]"
+            <a-month-picker class="w-full" placeholder="Select Month" for="Start Date"  @change="setRentedMonth"
+                v-decorator="['rentedMonth', { rules: [{ required: true, message: 'Please input Payment Date!' }] }]"
             />
         </a-form-item> 
 
@@ -99,7 +99,7 @@
         </label>
 
         <a-form-item >
-            <a-date-picker class="w-full"  placeholder="Payment Date" for="Start Date"  @change="setStartDate"
+            <a-date-picker class="w-full"  placeholder="Payment Date" for="Start Date"  @change="setPaymentDate"
                 v-decorator="['paymentDate', { rules: [{ required: true, message: 'Please input Payment Date!' }] }]"
             />
         </a-form-item> 
@@ -125,11 +125,14 @@ const fb = require("../../firebase/fbConfig");
 export default {
   data(){
       return{
-          paymentData: {
-              startDate:'',
+          monthlyRentData: {
+              paymentDate:'',
+              rentedMonth: '',
+              paymentStatus: '',
+              rentalId: '',
+              rentalName: '',
               createId:''
           },
-
           rentals: [],
           loading: false,
           formLayout: 'horizontal',
@@ -146,25 +149,29 @@ export default {
     Navbar
   },
   methods: {
-      monthPicker(date, dateString) {
-          console.log(date, dateString); //month picker
+      setRentedMonth(date, dateString) {
+           this.monthlyRentData.rentedMonth = dateString; //month picker
       },
-      setStartDate(date, dateString) {
-        this.paymentData.startDate = dateString;
+      setPaymentDate(date, dateString) {
+        this.monthlyRentData.paymentDate = dateString;
       },
-      saveRentals(values){
+      selectPaymentStatus(value){
+        this.monthlyRentData.paymentStatus = value;
+
+      },
+
+      saveMonthlyRents(values){
           this.loading = true;
-          fb.rentalsCollection
+          fb.monthlyRentCollection
             .add({
                 createdOn: new Date(),
-                rentalName: values.rentalName,
-                rentalId: values.rentalId,
-                rentedMonth: values.rentedMonth,
+                rentalName: this.monthlyRentData.rentalName,
+                rentalId:  this.monthlyRentData.rentalId,
+                rentedMonth: this.monthlyRentData.rentedMonth,
                 flatNumber: values.flatNumber,
-                id: values.id,
                 monthlyRent: values.monthlyRent,
-                paymentStatus : values.paymentStatus,
-                paymentDate: this.paymentData.startDate,
+                paymentStatus :this.monthlyRentData.paymentStatus,
+                paymentDate: this.monthlyRentData.paymentDate,
                 createdBy: this.user.data.uid
             })
             .then( doc => {
@@ -193,20 +200,23 @@ export default {
         e.preventDefault();
         this.form.validateFields((err, values) => {
           if (!err) {
-            this.saveRentals(values);
+            this.saveMonthlyRents(values);
           }
         });
       },
       selectRentals(index) {
         this.form.setFieldsValue({ monthlyRent:  this.rentals[index].monthlyRent});
         this.form.setFieldsValue({ flatNumber:  this.rentals[index].flatNumber});
+        this.form.setFieldsValue({ rentalName:  this.rentals[index].name});
+        this.monthlyRentData.rentalName = this.rentals[index].name;
+        this.monthlyRentData.rentalId = this.rentals[index].id;
 
       },
       handleBlur() {
-        console.log('blur');
+        // console.log('blur');
       },
       handleFocus() {
-        console.log('focus');
+        // console.log('focus');
       },
       filterOption(input, option) {
         return (
@@ -216,13 +226,13 @@ export default {
  
 
       async getRentals() {
-        await fb.rentalsCollection.where("createdBy", "==", this.user.data.uid).get().then(querySnapshot => {
+      await fb.rentalsCollection.where("createdBy", "==", this.user.data.uid).get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
           // doc.data() is never undefined for query doc snapshots
           this.rentals.push(doc.data());
           
         });
-        this.tableLoading= false;
+        this.tableLoading = false;
       });
     },
     
